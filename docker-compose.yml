@@ -1,0 +1,55 @@
+version: '3.8'
+services:
+  eureka-server:
+    image: custom-eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+
+  hello-service:
+    build:
+      context: ./hello
+    container_name: hello-service
+    ports:
+      - "3001:3001"
+    environment:
+      - EUREKA_SERVER=eureka-server
+      - SERVICE_PORT=3001
+    depends_on:
+      - eureka-server
+
+  world-service:
+    build:
+      context: ./world
+    container_name: world-service
+    ports:
+      - "3002:3002"
+    environment:
+      - EUREKA_SERVER=eureka-server
+      - SERVICE_PORT=3002
+    depends_on:
+      - eureka-server
+
+  foo-service:
+    build:
+      context: ./foo
+    container_name: foo-service
+    ports:
+      - "3003:3003"
+    environment:
+      - EUREKA_SERVER=eureka-server
+      - SERVICE_PORT=3003
+    depends_on:
+      - eureka-server
+
+  bar-service:
+    build:
+      context: ./bar
+    container_name: bar-service
+    ports:
+      - "3004:3004"
+    environment:
+      - EUREKA_SERVER=eureka-server
+      - SERVICE_PORT=3004
+    depends_on:
+      - eureka-server
